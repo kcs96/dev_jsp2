@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orm.mybatis.mapper.boardMapper">
+	<select id="boardList" parameterType="map" resultType="java.util.Map">
+	  SELECT
+	         *
+	    FROM board_master_t bm, board_sub_t bs
+	   WHERE bm.bm_no = bs.bm_no(+)
+	</select>
+	
+	
+	<insert id="boardMINS" parameterType="map">
+		INSERT INTO board_sub_t(bm_no,bm_title,bm_email,bm_group)
+								 VALUES(
+										 #{bm_no}
+										,#{bm_group}
+										,#{bm_title}
+										,#{bm_email})
+	</insert>
+	
+	<!-- 밑에 두개를 묶어서 프로시저 사용 가능 -->
+				
+	<insert id="boardSINS" parameterType="map">
+		INSERT INTO board_sub_t(bm_no,bm_title,bm_email,bm_group)
+								 VALUES(
+										 #{bm_no}
+										,#{bm_group}
+										,#{bm_title}
+										,#{bm_email})
+	</insert>
+	<update id="bmStepUpdate" parameterType="map">
+		UPDATE board_master_t
+		   SET bm_step = b_step+1
+		 WHERE bm_group = #{bm_group}
+		   AND bm_step > #{bm_step}
+	</update>
+	<!--글 목록에서 제목을 클릭햇을 때 조회수 1씩 증가 시키는 sql문  -->
+	<update id="hitCount" parameterType="int">
+		UPDATE board_master_t
+		   SET bm_step = b_hit+1
+		 WHERE bm_no=#{value}
+	</update>
+	<!-- 그룹번호 채번하기 -->
+	<select id="getBmGroup" parameterType="map" resultType="int">
+		select NVL((
+             select /*+index_desc(board_master_t ibm_group)*/ bm_group
+               from board_master_t
+               where rownum = 1
+                 and bm_group>0),0
+               )+1 bm_group
+  from dual
+	</select>
+	<!-- 글번호    채번하기 -->
+	<select id="getBmNo" parameterType="int" resultType="int">
+		select NVL((
+            		 select /*+index_desc(board_master_t BM_NO_PK)*/ bm_group
+             		   from board_master_t
+               	   	  where rownum = 1
+               ),0)+1 bm_no
+  	     from dual
+  
+	</select>
+</mapper> 

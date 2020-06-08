@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+	<context-param>
+	 	<param-name>log4jConfigLocation</param-name>
+	 	<param-value>/WEB-INF/classes/log4.properties</param-value>
+	</context-param>
+	<context-param>
+			<param-name>driver</param-name>
+			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+	</context-param>
+	<context-param>
+			<param-name>user</param-name>
+			<param-value>scott</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>orderInsert</servlet-name>
+		<servlet-class>jsp.ch17.OrderInsert</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>orderInsert</servlet-name>
+		<url-pattern>/ch17/orderInsert.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>frontServlet</servlet-name>
+		<servlet-class>jsp.ch17.FrontServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>frontServlet</servlet-name>
+		<url-pattern>/ch17/shopping2.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>helloServlet</servlet-name>
+		<servlet-class>jsp.ch13.HelloServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>helloServlet</servlet-name>
+		<url-pattern>/ch13/hello.do</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet> 
+		<servlet-name>DBCPInit</servlet-name>
+		<servlet-class>jsp.ch17.DBCPInitVer2</servlet-class>
+		<init-param>
+			<param-name>jdbcdriver</param-name>
+			<param-value>oracle.jdbc.driver.OracleDriver</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jdbcUrl</param-name>
+			<param-value>jdbc:oracle:thin:@192.168.0.252:1521:orcl11</param-value>
+		</init-param>
+		<init-param>
+			<param-name>username</param-name>
+			<param-value>scott</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pw</param-name>
+			<param-value>tiger</param-value>
+		</init-param>
+		<init-param>
+			<param-name>poolName</param-name>
+			<param-value>chap14</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>mvcServlet</servlet-name>
+		<servlet-class>jsp.ch17.MVCServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>mvcServlet</servlet-name>
+		<url-pattern>*.kosmo</url-pattern>
+	</servlet-mapping>
+	
+	
+	<servlet>
+		<servlet-name>boardServlet</servlet-name>
+		<servlet-class>ajax.BoardAction</servlet-class>
+		<init-param>
+			<param-name>mem_id</param-name>
+			<param-value>apple</param-value>
+		</init-param>
+		<init-param>
+			<param-name>mem_pw</param-name>
+			<param-value>123</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>boardServlet</servlet-name>
+		<url-pattern>*.ajax</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>parameterServlet</servlet-name>
+		<servlet-class>jsp.ch03.ParameterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>parameterServlet</servlet-name>
+		<url-pattern>/ch03/parameterAction.do</url-pattern>
+	</servlet-mapping>
+<!-- 	
+	<servlet>
+		<servlet-name>dept</servlet-name>
+		<servlet-class>forward.DeptController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dept</servlet-name>
+		<url-pattern>/forward/deptList.do</url-pattern>
+	</servlet-mapping> -->
+	
+		<servlet>
+		<servlet-name>dept2</servlet-name>
+		<servlet-class>jsp.dept.DeptController2</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dept2</servlet-name>
+		<url-pattern>/dept/jsonDeptList.do</url-pattern>
+	</servlet-mapping>
+	
+<!-- 	<error-page>
+		<error-code>404</error-code>
+		<location>/error/error404.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<error-code>500</error-code>
+		<location>/error/error500.jsp</location>
+	</error-page>
+	
+	<error-page>
+		<exception-type>java.lang.NullPointerException</exception-type>
+		<location>/error/errorNullPointer.jsp</location>
+	</error-page> -->
+	<servlet>
+		<servlet-name>loginServlet</servlet-name>
+		<servlet-class>jsp.ch10.LoginServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>loginServlet</servlet-name>
+		<url-pattern>/ch10/login.do</url-pattern>
+	</servlet-mapping>
+	<session-config>
+		<session-timeout>50</session-timeout>
+	</session-config>
+	   <resource-ref>
+      <description>Connection</description>
+      <res-ref-name>jdbc/dbPool</res-ref-name>
+      <res-type>javax.sql.DataSource</res-type>
+      <res-auth>Container</res-auth>
+   </resource-ref>
+   <servlet>
+   		<servlet-name>FrontController2</servlet-name>
+   		<servlet-class>com.mvc2.FrontMVC2</servlet-class>
+   </servlet>
+   <servlet-mapping>
+   		<servlet-name>FrontController2</servlet-name>
+		<url-pattern>*.mvc2</url-pattern>
+   </servlet-mapping>
+   
+      <servlet>
+   		<servlet-name>FrontController3</servlet-name>
+   		<servlet-class>com.mvc3.ActionSupport</servlet-class>
+   </servlet>
+   <servlet-mapping>
+   		<servlet-name>FrontController3</servlet-name>
+		<url-pattern>*.mvc3</url-pattern>
+   </servlet-mapping>
+   
+</web-app>
