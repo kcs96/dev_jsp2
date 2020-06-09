@@ -1,11 +1,14 @@
 package com.mvc3;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.log4j.Logger;
+
+import com.vo.BoardVO;
 
 public class BoardMDao {
 	Logger logger = Logger.getLogger(BoardMDao.class);
@@ -26,6 +29,15 @@ public class BoardMDao {
 		return bList;
 	}
 	
+	public List<Map<String, Object>> proc_boardList(Map<String, Object> pMap) {
+		logger.info("proc_boardList 호출 성공");
+		List<Map<String, Object>> bList = null;
+		sqlSec.selectOne("proc_boardList", pMap);
+		bList = (List) pMap.get("key");
+		logger.info("bList :" + bList.size());
+		return bList;
+	}
+	
 	public int getBmNo(Map<String, Object> pMap) {
 		logger.info("getBmNo 호출 성공");
 		int bm_no = 0;
@@ -37,7 +49,6 @@ public class BoardMDao {
 	public int getBmGroup(Map<String, Object> pMap) {
 		logger.info("getBmGroup 호출 성공");
 		int bm_group = 0;
-		List<Map<String, Object>> bList = null;
 		bm_group = sqlSec.selectOne("getBmGroup",pMap);
 		logger.info("bm_group :"+bm_group);
 		return bm_group;
@@ -47,6 +58,8 @@ public class BoardMDao {
 		logger.info("boardMINS 호출 성공");
 		int result = 0;
 		result = sqlSec.insert("boardMINS",pMap);
+		logger.info("result ==> "+result);
+		sqlSec.commit(true);
 		return result;
 	}
 

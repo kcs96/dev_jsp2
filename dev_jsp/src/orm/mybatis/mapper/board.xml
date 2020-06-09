@@ -1,20 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper     PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="orm.mybatis.mapper.boardMapper">
+	
+	<resultMap id="bmap" type="java.util.Map"/>
+	<select id="proc_boardList" parameterType="map" statementType="CALLABLE">                      <!-- 무조건 Map  -->
+	 { call proc_boardList(#{key, jdbcType=CURSOR, mode=OUT, javaType=java.sql.ResultSet,resultMap=bmap})}
+	</select>
+
 	<select id="boardList" parameterType="map" resultType="java.util.Map">
 	  SELECT
-	         *
+	         bm.bm_no,bm.bm_title,bm.bm_content,bm.bm_write,bm.bm_email,bm.bm_pw,bm.bm_group,bm.bm_tos,bm.bm_step
 	    FROM board_master_t bm, board_sub_t bs
 	   WHERE bm.bm_no = bs.bm_no(+)
+	   <if test="bm_no != null">
+	   	AND bm.bm_no = #{bm_no}
+	   </if>
+	</select>
+	
+	<select id="selectList" parameterType="map" resultType="java.util.Map">
+	  SELECT
+	         bm.bm_no,bm.bm_title,bm.bm_content,bm.bm_email,bm.bm_pw,bm.bm_group,bm.bm_tos,bm.bm_step
+	    FROM board_master_t bm
+	   WHERE bm.bm_no=#{bm_no}
 	</select>
 	
 	
 	<insert id="boardMINS" parameterType="map">
-		INSERT INTO board_sub_t(bm_no,bm_title,bm_email,bm_group)
+		INSERT INTO board_master_t(bm_no,bm_title,bm_write,bm_content,bm_date,bm_pw,bm_email,bm_hit,bm_group,bm_tos,bm_step)
 								 VALUES(
 										 #{bm_no}
-										,#{bm_group}
 										,#{bm_title}
-										,#{bm_email})
+										,#{bm_write}
+										,#{bm_content}
+										,TO_CHAR(sysdate,'YYYY-MM-DD')
+										,#{bm_pw}
+										,#{bm_email}
+										,0
+										,#{bm_group}
+										,#{bm_tos}
+										,#{bm_step})
 	</insert>
 	
 	<!-- 밑에 두개를 묶어서 프로시저 사용 가능 -->
@@ -52,7 +75,7 @@
 	<!-- 글번호    채번하기 -->
 	<select id="getBmNo" parameterType="int" resultType="int">
 		select NVL((
-            		 select /*+index_desc(board_master_t BM_NO_PK)*/ bm_group
+            		 select /*+index_desc(board_master_t BM_NO_PK)*/ bm_no
              		   from board_master_t
                	   	  where rownum = 1
                ),0)+1 bm_no

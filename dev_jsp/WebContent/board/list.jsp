@@ -50,7 +50,7 @@
             toolbar="#toolbar" pagination="true"
             rownumbers="true" fitColumns="true" singleSelect="true">
         <thead>
-               <tr>
+               <tr>  
                 <th field="bm_no" width="50">번호</th>
                 <th field="bm_title" width="250">글제목</th>
                 <th field="bm_writer" width="100">작성자</th>
@@ -68,10 +68,15 @@
 %>
 			<tr>
 				<td><%=rmap.get("BM_NO") %></td>
+				<td>
+				<a href="./boardDetail.mvc3?cud=DET&bm_no=<%=rmap.get("BM_NO") %>">
+				<%=rmap.get("BM_TITLE") %>
+				</a>
+				</td>
 				<td><%=rmap.get("BM_TITLE") %></td>
-				<td><%=rmap.get("BM_WRITER") %></td>
-				<td><%=rmap.get("BM_FILE") %></td>
-				<td><%=rmap.get("BM_HIT") %></td>
+				<td><%=rmap.get("BM_WRITE") %></td>
+				<td><%=rmap.get("BM_EMAIL") %></td>
+				<td><%=rmap.get("BM_GROUP") %></td>
 			</tr>
 <%
 		} //end of for문

@@ -35,14 +35,30 @@ public class BoardController implements Controller2020 {
 			logger.info("boardList 호출 성공");
 			List<Map<String,Object>> mList = null;
 			Map<String,Object> pMap = new HashMap<>();
-			mList = bLogic.boardList(pMap);
+			//mList = bLogic.boardList(pMap);
+			mList = bLogic.proc_boardList(pMap);
 			req.setAttribute("boardList", mList);
 			path = "forward:list.jsp";
 		}
+		//제목을 클릭했을때?
+		else if("boardDetail".equals(requestName)) {
+			logger.info("boardDetail 호출 성공");
+			List<Map<String,Object>> mList = null;
+			Map<String,Object> pMap = new HashMap<>();
+			pMap.put("bm_no", req.getParameter("bm_no"));
+			mList = bLogic.boardList(pMap);
+			req.setAttribute("boardDetail", mList);
+			path = "forward:read.jsp";
+		}		
 		//너 입력하려구?
 		else if("boardINS".equals(requestName)) {
 			int result =0;
 			Map<String,Object> pMap = new HashMap<>();
+			pMap.put("bm_pw", req.getParameter("bm_pw"));
+			pMap.put("bm_title", req.getParameter("bm_title"));
+			pMap.put("bm_write", req.getParameter("bm_write"));
+			pMap.put("bm_email", req.getParameter("bm_email"));
+			pMap.put("bm_content", req.getParameter("bm_content"));
 			result = bLogic.boardINS(pMap);
 			if(result==1) path ="redirect:boardInsOk.jsp";
 			else if(result ==0) path="redirect:boardInsFail.jsp";

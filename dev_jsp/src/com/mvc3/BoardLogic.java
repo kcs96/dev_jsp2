@@ -21,6 +21,12 @@ public class BoardLogic {
 		bList = bmDao.boardList(pMap);
 		return bList;
 	}
+	public List<Map<String, Object>> proc_boardList(Map<String, Object> pMap) {
+		logger.info("boardList 호출성공");
+		List<Map<String,Object>> bList = null;
+		bList = bmDao.proc_boardList(pMap);
+		return bList;
+	}
 	//난이도 : 상, 1차 목표, 2차 목표, 3차 목표
 	//트랜젝션처리에 대한 부분 - 프로시저로 해보면 좋겠다.-금융,보험,물류,회계
 	//첨부파일 처리
@@ -31,7 +37,7 @@ public class BoardLogic {
 		int result = 0;
 		int bm_no = 0;
 	    bm_no = bmDao.getBmNo(pMap);
-	    pMap.put("bm_no",bm_no);
+	   logger.info("bm_no ==> "+bm_no);
 	    int bm_group = 0;
 		//그룹번호가 있나요?
 		//어디서 오셨죠? list.jsp이면 없다, read.jsp이면 있다.
@@ -43,7 +49,7 @@ public class BoardLogic {
 			if(!pMap.containsKey("bm_no")) {
 				//새글이면 그룹번호를 새로 채번해야 합니다.
 				pMap.put("bm_group", bm_group);
-				pMap.put("bm_pos",0);
+				pMap.put("bm_tos",0);
 				pMap.put("bm_step",0);
 			}
 			//아님 댓글이야?
@@ -66,9 +72,11 @@ public class BoardLogic {
 			//주의사항:테이블 컬럼을 사용자로부터 입력받는 값과 개발자끼리만 공유하는 값
 			logger.info("bm_no ===>"+pMap.get("bm_no"));
 			logger.info("bm_title ===>"+pMap.get("bm_title"));
+			logger.info("bm_write ===>"+pMap.get("bm_write"));
 			logger.info("bm_content ===>"+pMap.get("bm_content"));
 			logger.info("bm_email ===>"+pMap.get("bm_email"));
 			logger.info("bm_pw ===>"+pMap.get("bm_pw"));
+			pMap.put("bm_no",bm_no);
 			result = bmDao.boardMINS(pMap);
 			//첨부파일이 있을때만 bsDao.boardSINS(pMap);
 		} catch (Exception e) {
