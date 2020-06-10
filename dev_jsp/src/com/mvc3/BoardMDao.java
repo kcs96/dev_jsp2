@@ -11,55 +11,69 @@ import org.apache.log4j.Logger;
 import com.vo.BoardVO;
 
 public class BoardMDao {
+
 	Logger logger = Logger.getLogger(BoardMDao.class);
-	public SqlSessionFactory sqlMapper = null;
-	public SqlSession sqlSec = null;
+	SqlSessionFactory sqlMapper = null;
+	SqlSession sqlSes = null;
 	
 	public BoardMDao() {
-		logger.info("BoardMDao() 호출 성공"); 
-		sqlMapper= MyBatisCommonFactory.getSqlSessionFactory();
-		sqlSec = sqlMapper.openSession();
+		this.sqlMapper = MyBatisCommonFactory.getSqlSessionFactory();
+		logger.info("sqlMapper : "+sqlMapper);
+		this.sqlSes = sqlMapper.openSession();
 	}
-	
+	//게시판 목록 가져오기
 	public List<Map<String, Object>> boardList(Map<String, Object> pMap) {
 		logger.info("boardList 호출 성공");
-		List<Map<String, Object>> bList = null;
-		bList = sqlSec.selectList("boardList",pMap);
-		logger.info("bList :"+bList.size());
-		return bList;
+		List<Map<String, Object>> boardList = null;
+		boardList = sqlSes.selectList("boardList",pMap);
+		logger.info(" - boardList : "+boardList.size()+"row");
+		return boardList;
 	}
-	
+	//프로시저로 가져오기 
 	public List<Map<String, Object>> proc_boardList(Map<String, Object> pMap) {
 		logger.info("proc_boardList 호출 성공");
-		List<Map<String, Object>> bList = null;
-		sqlSec.selectOne("proc_boardList", pMap);
-		bList = (List) pMap.get("key");
-		logger.info("bList :" + bList.size());
-		return bList;
-	}
-	
-	public int getBmNo(Map<String, Object> pMap) {
-		logger.info("getBmNo 호출 성공");
-		int bm_no = 0;
-		bm_no = sqlSec.selectOne("getBmNo",pMap);
-		logger.info("bm_no :"+bm_no);
-		return bm_no;
-	}
-	
+		List<Map<String, Object>> boardList = null;
+		sqlSes.selectOne("proc_boardList",pMap);
+		boardList = (List)pMap.get("key");
+		logger.info(" - boardList : "+boardList.size()+"row");
+		Iterator iter = boardList.iterator();
+		while(iter.hasNext()) {
+			BoardVO bVo = (BoardVO)iter.next();
+			logger.info(" - 글 번호 : "+bVo.getBm_no());
+		}
+		return boardList;
+	} //이노플렉스 
+	//그룹번호 채번하기
 	public int getBmGroup(Map<String, Object> pMap) {
 		logger.info("getBmGroup 호출 성공");
 		int bm_group = 0;
-		bm_group = sqlSec.selectOne("getBmGroup",pMap);
-		logger.info("bm_group :"+bm_group);
+		bm_group = sqlSes.selectOne("getBmGroup",pMap);
+		logger.info(" - bm_group : "+bm_group);
 		return bm_group;
 	}
 	
+	public int bmStepUpdate(Map<String, Object> pMap) {
+		logger.info("bmStepUpdate 호출 성공");
+		int result = 0;
+		result = sqlSes.update("bmStepUpdate",pMap);
+		logger.info(" - result : "+result);
+		sqlSes.commit(true);
+		return result;
+	}
+	//글번호 채번하기
+	public int getBmNo(Map<String, Object> pMap) {
+		logger.info("getBmNo 호출 성공");
+		int bm_no = 0;
+		bm_no = sqlSes.selectOne("getBmNo",pMap);
+		logger.info(" - bm_no : "+bm_no);
+		return bm_no;
+	}
+
 	public int boardMINS(Map<String, Object> pMap) {
 		logger.info("boardMINS 호출 성공");
 		int result = 0;
-		result = sqlSec.insert("boardMINS",pMap);
-		logger.info("result ==> "+result);
-		sqlSec.commit(true);
+		result = sqlSes.insert("boardMINS",pMap);
+		if(result ==1 ) sqlSes.commit();
 		return result;
 	}
 
@@ -73,4 +87,10 @@ public class BoardMDao {
 		return 0;
 	}
 
+	
+	public static void main(String[] args) {
+		BoardMDao mb = new BoardMDao();
+		mb.proc_boardList(null);
+	
+	}
 }

@@ -4,14 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>b1.jsp[소스가 하나로 합쳐짐.]</title>
+<title>Insert title here</title>
 </head>
 <body>
-첫쨰<br>
-둘째<br>
-셋째<br>
-<%
-	out.print(id);
-%>
+
 </body>
 </html>
