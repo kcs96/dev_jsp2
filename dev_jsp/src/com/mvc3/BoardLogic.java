@@ -110,7 +110,6 @@ public class BoardLogic {
 	public int boardDEL(Map<String, Object> pMap) {
 		logger.info("boardDEL 호출 성공");
 		int result = 0;
-		
 		result = bmDao.boardDEL(pMap);
 		return result;
 	}

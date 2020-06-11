@@ -46,7 +46,26 @@ public class BoardController implements Controller3 {
 			path = "forward:list.jsp";
 		}
 		//제목을 클릭했을때 ?
-		if("boardDetail".equals(requestName)) {
+		else if("boardDetail".equals(requestName)) {
+			List<Map<String, Object>> boardList = null;
+			Map<String, Object> pMap = new HashMap<String, Object>();
+			pMap.put("bm_no", req.getParameter("bm_no"));
+			boardList = bLogic.boardList(pMap);
+			//boardList = bLogic.proc_boardList(pMap);
+			req.setAttribute("boardDetail", boardList);
+			path = "forward:read.jsp";
+		}
+		else if("updateView".equals(requestName)) {
+			logger.info("updateView 호출 성공");
+			List<Map<String, Object>> boardList = null;
+			Map<String, Object> pMap = new HashMap<String, Object>();
+			pMap.put("bm_no", req.getParameter("bm_no"));
+			boardList = bLogic.boardList(pMap);
+			//boardList = bLogic.proc_boardList(pMap);
+			req.setAttribute("updateView", boardList);
+			path = "forward:boardUpdForm.jsp";
+		}
+		else if("boardDetail".equals(requestName)) {
 			List<Map<String, Object>> boardList = null;
 			Map<String, Object> pMap = new HashMap<String, Object>();
 			pMap.put("bm_no", req.getParameter("bm_no"));
@@ -79,10 +98,10 @@ public class BoardController implements Controller3 {
 		else if("boardDEL".equals(requestName)) {
 			int result = 0;
 			Map<String, Object> pMap = new HashMap<String, Object>();
+			pMap.put("bm_no",req.getParameter("bm_no"));
 			result = bLogic.boardDEL(pMap);
 			if(result == 1) path="redirect:boardDelOk.jsp"; 
 			else if(result == 0) path="redirect:boardDelFail.jsp"; 
-			
 		}//end of if(requestName)
 		return path;
 	}//end of process String

@@ -27,6 +27,7 @@
 		rbm_step = rMap.get("BM_STEP").toString();
 		rbm_pw = rMap.get("BM_PW").toString();
 	}
+	out.print("DB에서 가져온 비번"+rbm_pw);
 	
 %>    
 <html>
@@ -42,9 +43,50 @@
 	}
 	function updateForm() {
 		alert("수정 클릭");
+		$('#d_boardDel').dialog({
+			 title:'글수정'
+			,buttons:btn_boardDel
+			,width:720
+			,height:450
+			,closed:true
+			,cache:false
+			,href:'boardUpdForm.jsp?bm_title=<%=rbm_title%>'
+			,modal:true
+		});
+		$('#d_boardDel').dialog('open');
+	}
+	
+	function boardDel(){
+		var db_pw = <%=rbm_pw%>
+		var u_pw = $("#u_pw").textbox('getValue');
+		//사용자가 입력한 비번과 DB에서 가져온 비번을 비교한다.
+		if(u_pw==db_pw){
+			$.messager.confirm('Confirm','정말 삭제하시겠습니까?',function(r){
+				if(r){
+					location.href="./boardDEL.mvc3?cud=DEL&bm_no=<%=rbm_no%>";
+				}
+			});
+		}
+		else{
+			$('#u_pw').textbox('setValue','');
+		}
+	}
+	function boardDelClose(){
+		$('#d_boardDel').dialog('close');
 	}
 	function boardDelView() {
 		alert("삭제 클릭");
+		$('#d_boardDel').dialog({
+			 title:'글삭제'
+			,buttons:btn_boardDel
+			,width:420
+			,height:250
+			,closed:true
+			,cache:false
+			,href:'boardDelForm.jsp?bm_no<%=rbm_no%>&bm_pw=<%=rbm_pw%>' 
+			,modal:true
+		});
+		$('#d_boardDel').dialog('open');
 	}
 	function boardList() {
 		alert("목록 클릭");

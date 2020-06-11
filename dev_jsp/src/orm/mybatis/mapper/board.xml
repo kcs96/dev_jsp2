@@ -97,4 +97,8 @@
 		  FROM dual
 	</select>
 	
+	<!-- 글 삭제하기 -->
+	<delete id="boardDEL" parameterType="map">
+		DELETE FROM board_master_t WHERE bm_no = #{bm_no}
+	</delete>
 </mapper>

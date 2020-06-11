@@ -84,8 +84,11 @@ public class BoardMDao {
 	}
 
 	public int boardDEL(Map<String, Object> pMap) {
-		logger.info("boardDEL 호출 성공");
-		return 0;
+		logger.info("boardDEL 호출 성공"+pMap.get("bm_no"));
+		int result = 0;
+		result = sqlSes.delete("boardDEL",pMap);
+		if(result ==1 ) sqlSes.commit();
+		return result;
 	}
 
 	

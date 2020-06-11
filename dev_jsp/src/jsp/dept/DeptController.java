@@ -32,7 +32,7 @@ public class DeptController extends HttpServlet {
 		HashMapBinder hmb = new HashMapBinder(req);
 		Map<String,Object> pMap = new HashMap<>();
 		Map<String,Object> rMap = hmb.binder(pMap);
-		pMap=dDao.deptList(rMap);
+		pMap=(Map<String, Object>) dDao.deptList(rMap);
 		req.setAttribute("pMap", pMap);
 		RequestDispatcher view = req.getRequestDispatcher("/forward/deptList.jsp");
 		view.forward(req, res);

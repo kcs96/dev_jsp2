@@ -17,12 +17,9 @@ public class ControllerMapper3 {
 		if(commands.length == 2) {
 			String work = commands[0];
 			String requestName = commands[1];
-			if("member".equals(work)) {
-				
-				controller = new MemberController3(requestName);
-			} 
+		
 			//계층형 게시판 컨트롤러 생성하기
-			else if("board".equals(work)) {
+			if("board".equals(work)) {
 				controller = new BoardController(requestName); 
 			}
 		} 
